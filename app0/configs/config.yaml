@@ -1,0 +1,11 @@
+app:
+  app_name: vapp0
+  env:
+  health:
+logging:
+  app_name: vapp0
+
+server:
+  http:
+    addr: 0.0.0.0:8001
+    timeout: 1s
