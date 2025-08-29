@@ -4,10 +4,10 @@ go 1.23.6
 
 require (
 	github.com/alitto/pond v1.9.2
-	github.com/aveyuan/gwf v1.0.0
 	github.com/aveyuan/vbasedata v0.0.1
-	github.com/aveyuan/vlogger v0.0.1
+	github.com/aveyuan/vlogger v0.0.2
 	github.com/go-kratos/kratos/v2 v2.8.4
+	github.com/gogf/gf v1.16.9
 	github.com/gogf/gf/v2 v2.9.1
 	github.com/google/wire v0.7.0
 	github.com/redis/go-redis/v9 v9.12.1
@@ -20,6 +20,7 @@ require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/BurntSushi/toml v1.5.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/clbanning/mxj v1.8.5-0.20200714211355-ff02cfb8ea28 // indirect
 	github.com/clbanning/mxj/v2 v2.7.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
