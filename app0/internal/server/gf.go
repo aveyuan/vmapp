@@ -10,6 +10,7 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/i18n/gi18n"
 	"github.com/gogf/gf/v2/net/ghttp"
+	"github.com/gogf/gf/v2/os/glog"
 	"github.com/gogf/gf/v2/os/gsession"
 )
 
@@ -18,19 +19,16 @@ func I18nMiddleware(r *ghttp.Request) {
 
 }
 
-
-
 func NewGf(c *conf.AppConf, bc *conf.BootComponent, userServer *service.GfUserService, data *base.Data) *ghttp.Server {
-	g.SetDebug(true)
 	r := g.Server()
-
-	r.Logger().SetDebug(false)
-	r.SetErrorLogEnabled(false)
-
+	g.SetDebug(false)
+	r.SetGraceful(true)
+	r.SetLogger(&glog.Logger{})
 	r.SetSessionMaxAge(time.Minute)
 	r.SetSessionStorage(gsession.NewStorageMemory())
 	// r.Use(I18nMiddleware)
 	
+
 	r.Use(ghttp.MiddlewareGzip)
 	r.Use(middleware.NewRequestLog(bc.Logger))
 	r.Use(middleware.NewRecoverLog(bc.Logger))
