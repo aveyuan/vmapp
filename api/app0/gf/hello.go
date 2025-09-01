@@ -1,4 +1,4 @@
-package v1
+package gf
 
 import (
 	"github.com/gogf/gf/v2/frame/g"
@@ -6,17 +6,9 @@ import (
 
 type HelloReq struct {
 	g.Meta `path:"/hello" tags:"Hello" method:"get" summary:"You first hello api"`
+	Name string `json:"name" query:"name"`
 }
 type HelloRes struct {
-	g.Meta `mime:"text/html" example:"string"`
-	Content string `json:"content"`
-
-}
-
-type GetelloReq struct {
-	g.Meta `path:"/get" tags:"Hello" method:"get" summary:"You first hello api"`
-}
-type GetHelloRes struct {
 	g.Meta `mime:"text/html" example:"string"`
 	Content string `json:"content"`
 

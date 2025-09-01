@@ -54,7 +54,6 @@ func (t *UserCase) GetUser(ctx context.Context, name string) (string, error) {
 // GetHello 测试
 func (t *UserCase) GetHello(ctx context.Context) ([]models.User, error) {
 	t.log.Info( gctx.CtxId(ctx))
-	return nil, nil
 	m, err := t.up.GetHello(ctx)
 	if err != nil {
 		t.log.WithContext(ctx).Errorf("获取数据失败,%+v", err)
