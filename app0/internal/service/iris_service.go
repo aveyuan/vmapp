@@ -23,6 +23,11 @@ func NewIrisUserService(c *conf.AppConf, bc *conf.BootComponent, uc *usecase.Use
 	}
 }
 
+// @Title 获取Hello
+// @Param  .  query  v1.HelloReq  false  "请求参数"
+// @Success  200  object  v1.HelloRes  "返回结果"
+// @Tag users
+// @Route /api/v1/hello [get]
 func (t *IrisUserService) Hello(c iris.Context) {
 
 	var req v1.HelloReq

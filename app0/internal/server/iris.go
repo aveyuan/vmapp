@@ -11,7 +11,9 @@ import (
 func NewIris(c *conf.AppConf, bc *conf.BootComponent, userServer *service.IrisUserService, data *base.Data) *iris.Application {
 	r := iris.New()
 
-	r.Get("/hello", userServer.Hello)
+	api := r.Party("/api")
+	v1 := api.Party("/v1")
+	v1.Get("/hello", userServer.Hello)
 
 	return r
 }

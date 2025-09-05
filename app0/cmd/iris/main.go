@@ -24,6 +24,15 @@ func init() {
 	flag.StringVar(&flagconf, "conf", "../../configs", "config path, eg: -conf config.yaml")
 }
 
+// @Version 1.0.0
+// @Title 后端服务
+// @Description 提供API服务
+// @ContactName aveyuan
+// @ContactEmail aveyuan@163.com
+// @ContactURL https://www.github.com/aveyuan
+// @Server http://127.0.0.1 Server-1
+// @Security AuthorizationHeader read write
+// @SecurityScheme AuthorizationHeader 输入你的token
 func main() {
 
 	fc := config.New(
