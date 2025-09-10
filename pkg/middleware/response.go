@@ -4,7 +4,7 @@ import (
 	"errors"
 	"mime"
 	"net/http"
-	"vmapp/pkg/verror"
+	"vmapp/pkg/vhttp"
 
 	"github.com/gogf/gf/v2/net/ghttp"
 )
@@ -50,7 +50,7 @@ func MiddlewareHandlerResponse(r *ghttp.Request) {
 		res = r.GetHandlerResponse()
 	)
 	if err != nil {
-		var errData verror.ErrData
+		var errData vhttp.ErrData
 		d := &DefaultHandlerResponse{}
 		if errors.As(err, &errData) {
 			d.Code = errData.Code

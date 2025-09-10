@@ -46,6 +46,36 @@
           }
         ]
       }
+    },
+    "/api/v1/login": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "返回结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/vmapp.api.app0.v1.LoginRes"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "summary": "登录",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/vmapp.api.app0.v1.LoginReq"
+              }
+            }
+          },
+          "required": true
+        }
+      }
     }
   },
   "components": {
@@ -59,12 +89,83 @@
           }
         }
       },
+      "vmapp.api.app0.v1.Base": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "状态码"
+          },
+          "msg": {
+            "type": "string",
+            "description": "消息"
+          }
+        }
+      },
       "vmapp.api.app0.v1.HelloRes": {
         "type": "object",
         "properties": {
           "content": {
             "type": "string",
             "description": "返回内容"
+          }
+        }
+      },
+      "vmapp.api.app0.v1.LoginReq": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "用户名"
+          },
+          "password": {
+            "type": "string",
+            "description": "密码"
+          },
+          "captcha": {
+            "type": "string",
+            "description": "验证码"
+          },
+          "captchaId": {
+            "type": "string",
+            "description": "验证码ID"
+          }
+        }
+      },
+      "vmapp.api.app0.v1.LoginRes": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "object",
+            "$ref": "#/components/schemas/vmapp.api.app0.v1.Page"
+          },
+          "code": {
+            "type": "integer",
+            "description": "状态码"
+          },
+          "msg": {
+            "type": "string",
+            "description": "消息"
+          }
+        }
+      },
+      "vmapp.api.app0.v1.Page": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "count": {
+            "type": "integer"
+          },
+          "perPage": {
+            "type": "integer"
+          },
+          "currentPage": {
+            "type": "integer"
+          },
+          "totalPages": {
+            "type": "integer"
           }
         }
       }

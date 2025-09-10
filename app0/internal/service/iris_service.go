@@ -2,9 +2,11 @@ package service
 
 import (
 	"context"
+	"net/http"
 	v1 "vmapp/api/app0/v1"
 	"vmapp/app0/internal/biz/usecase"
 	"vmapp/app0/internal/conf"
+	"vmapp/pkg/vhttp"
 
 	"github.com/kataras/iris/v12"
 )
@@ -48,5 +50,28 @@ func (t *IrisUserService) Hello(c iris.Context) {
 
 	res.Content = resd
 	c.JSON(res)
+
+}
+
+// @Title 登录
+// @Param  .  body  v1.LoginReq  true  "请求参数"
+// @Success  200  object  v1.LoginRes  "返回结果"
+// @Tag users
+// @Route /api/v1/login [post]
+func (t *IrisUserService) Login(c iris.Context) {
+
+	var req v1.LoginReq
+	if err := c.ReadJSON(&req); err != nil {
+		vhttp.ErrorHandle(c, vhttp.NewError(http.StatusBadRequest, err.Error()))
+		return
+	}
+
+	resd, err := t.uc.Login(c, &req)
+	if err != nil {
+		vhttp.ErrorHandle(c, err)
+		return
+	}
+
+	c.JSON(resd)
 
 }

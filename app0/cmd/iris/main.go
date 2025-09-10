@@ -51,6 +51,14 @@ func main() {
 		panic(err)
 	}
 
+	if ac.Data != nil && ac.Data.DB != nil && ac.Data.DB.Logconfig != nil {
+		ac.Data.DB.Logconfig.Level = ac.Logging.Level
+	}
+
+	ac.Logging.AppName = ac.App.AppName
+	ac.Logging.AppVersion = Version
+	ac.Logging.Env = ac.App.Env
+
 	vlogger := vlogger.New(ac.Logging)
 
 	bc := conf.NewBootComponent(vlogger)
