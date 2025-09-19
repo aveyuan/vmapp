@@ -1,11 +1,11 @@
 package main
 
 import (
-
 	"flag"
 
-	"github.com/aveyuan/vlogger"
 	"vmapp/app0/internal/conf"
+
+	"github.com/aveyuan/vlogger"
 
 	_ "go.uber.org/automaxprocs"
 
@@ -20,7 +20,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&flagconf, "conf", "../../configs", "config path, eg: -conf config.yaml")
+	flag.StringVar(&flagconf, "conf", "../configs", "config path, eg: -conf config.yaml")
 }
 
 func main() {
@@ -45,12 +45,12 @@ func main() {
 
 	bc := conf.NewBootComponent(vlogger)
 
-	Handler, cleanup, err := wireGfApp(&ac, bc)
+	Handler, cleanup, err := wireGinApp(&ac, bc)
 	if err != nil {
 		panic(err)
 	}
 
-	Handler.SetAddr(ac.Server.Http.Addr)
+	Handler.Run(ac.Server.Http.Addr)
 
 	defer cleanup()
 
