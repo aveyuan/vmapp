@@ -1,0 +1,187 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "后端服务",
+    "description": "提供API服务",
+    "contact": {
+      "name": "aveyuan",
+      "email": "aveyuan@163.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1",
+      "description": " Server-1"
+    }
+  ],
+  "paths": {
+    "/api/v1/hello": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "返回结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/vmapp.api.app0.v1.HelloRes"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "summary": "获取Hello",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "姓名",
+            "schema": {
+              "type": "string",
+              "description": "姓名"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/login": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "返回结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/vmapp.api.app0.v1.LoginRes"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "summary": "登录",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/vmapp.api.app0.v1.LoginReq"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HelloReq": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "姓名"
+          }
+        }
+      },
+      "vmapp.api.app0.v1.Base": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "状态码"
+          },
+          "msg": {
+            "type": "string",
+            "description": "消息"
+          }
+        }
+      },
+      "vmapp.api.app0.v1.HelloRes": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "返回内容"
+          }
+        }
+      },
+      "vmapp.api.app0.v1.LoginReq": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "用户名"
+          },
+          "password": {
+            "type": "string",
+            "description": "密码"
+          },
+          "captcha": {
+            "type": "string",
+            "description": "验证码"
+          },
+          "captchaId": {
+            "type": "string",
+            "description": "验证码ID"
+          }
+        }
+      },
+      "vmapp.api.app0.v1.LoginRes": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "object",
+            "$ref": "#/components/schemas/vmapp.api.app0.v1.Page"
+          },
+          "code": {
+            "type": "integer",
+            "description": "状态码"
+          },
+          "msg": {
+            "type": "string",
+            "description": "消息"
+          }
+        }
+      },
+      "vmapp.api.app0.v1.Page": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "count": {
+            "type": "integer"
+          },
+          "perPage": {
+            "type": "integer"
+          },
+          "currentPage": {
+            "type": "integer"
+          },
+          "totalPages": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "AuthorizationHeader": {
+        "type": "输入你的token"
+      }
+    }
+  },
+  "security": [
+    {
+      "AuthorizationHeader": [
+        "read",
+        "write"
+      ]
+    }
+  ]
+}

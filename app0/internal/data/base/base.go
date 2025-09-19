@@ -31,6 +31,13 @@ func (d *Data) InTx(ctx context.Context, fn func(ctx context.Context) error) err
 	})
 }
 
+func (d *Data) Tx(ctx context.Context) (*gorm.DB, context.Context) {
+	tx := d.Mysql.Begin()
+	ctx = context.WithValue(ctx, contextTxKey{}, tx)
+	return tx, ctx
+}
+
+
 func (d *Data) DB(ctx context.Context) *gorm.DB {
 	tx, ok := ctx.Value(contextTxKey{}).(*gorm.DB)
 	if ok {

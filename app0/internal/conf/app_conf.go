@@ -10,11 +10,11 @@ type AppConf struct {
 	App     *vbasedata.App     `yaml:"app" json:"app"`
 	Server  *Server            `yaml:"server" json:"server"`
 	Data    *Data              `yaml:"data" json:"data"`
-	Logging *vlogger.LogConfig `json:"logging"`
+	Logging *vlogger.LogConfig `yaml:"logging" json:"logging"`
 }
 
 type Server struct {
-	Http *vbasedata.Http `json:"http"`
+	Http *vbasedata.Http `yaml:"http" json:"http"`
 }
 
 type Data struct {
