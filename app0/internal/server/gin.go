@@ -11,9 +11,12 @@ import (
 
 
 
-func NewGin(c *conf.AppConf, bc *conf.BootComponent, userServer *service.GinUserService, data *base.Data) *gin.Engine {
+func NewGin(c *conf.AppConf, bc *conf.BootComponent, userServer *service.SysService, data *base.Data) *gin.Engine {
 	r := gin.New()
-	r.GET("/hello", userServer.Hello)
-
+	r.POST("/login", userServer.Login)
+	r.POST("/register", userServer.Register)
+	r.POST("/forget", userServer.Forget)
+	r.POST("/logout", userServer.LogOut)
+	r.POST("/refertoken", userServer.ReferToken)
 	return r
 }

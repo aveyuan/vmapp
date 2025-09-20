@@ -60,9 +60,9 @@ func main() {
 
 	vlogger := vlogger.New(ac.Logging)
 
-	bc := conf.NewBootComponent(vlogger)
+	bc := conf.NewBootComponent(&ac, vlogger)
 
-	Handler, cleanup, err := wireGinApp(&ac, bc)
+	Handler, cleanup, err := wireGinApp(&ac, ac.Data, bc)
 	if err != nil {
 		panic(err)
 	}

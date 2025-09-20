@@ -11,6 +11,8 @@ import (
 	"vmapp/app0/internal/biz/usecase"
 	"vmapp/app0/internal/conf"
 	"vmapp/app0/internal/data/base"
+	"vmapp/app0/internal/data/role_repo"
+	"vmapp/app0/internal/data/send_repo"
 	"vmapp/app0/internal/data/user_repo"
 	"vmapp/app0/internal/server"
 	"vmapp/app0/internal/service"
@@ -22,16 +24,18 @@ import (
 
 // Injectors from wire.go:
 
-func wireGinApp(ac *conf.AppConf, bc *conf.BootComponent) (*gin.Engine, func(), error) {
+func wireGinApp(ac *conf.AppConf, dc *conf.Data, bc *conf.BootComponent) (*gin.Engine, func(), error) {
 	data, cleanup, err := base.NewData(ac, bc)
 	if err != nil {
 		return nil, nil, err
 	}
 	userRepo := user_repo.NewUserRepo(data, bc)
 	transaction := base.NewTransaction(data)
-	userCase := usecase.NewUserCase(userRepo, transaction, bc)
-	ginUserService := service.NewGinUserService(ac, bc, userCase)
-	engine := server.NewGin(ac, bc, ginUserService, data)
+	roleRepo := role_repo.NewRoleRepo(data, bc)
+	sendRepo := send_repo.NewSendRepo(data, bc)
+	userUseCase := usecase.NewUserUseCase(dc, userRepo, transaction, bc, roleRepo, sendRepo)
+	sysService := service.NewSysService(ac, bc, userUseCase)
+	engine := server.NewGin(ac, bc, sysService, data)
 	return engine, func() {
 		cleanup()
 	}, nil

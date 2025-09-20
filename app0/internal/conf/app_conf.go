@@ -2,6 +2,7 @@ package conf
 
 import (
 	"github.com/aveyuan/vbasedata"
+	"github.com/aveyuan/vjwt"
 
 	"github.com/aveyuan/vlogger"
 )
@@ -20,5 +21,6 @@ type Server struct {
 type Data struct {
 	Redis *vbasedata.RedisConfig `json:"redis"`
 	DB    *vbasedata.GormConfig  `json:"db"`
-	Pond  *vbasedata.Pond        `json:"pond"`
+	Pond  *vbasedata.PondConfig `json:"pond"`
+	Jwt   *vjwt.VjwtP           `json:"jwt"`
 }

@@ -17,6 +17,6 @@ import (
 )
 
 
-func wireGinApp(ac *conf.AppConf, bc *conf.BootComponent) (*gin.Engine, func(), error) {
+func wireGinApp(ac *conf.AppConf, dc *conf.Data, bc *conf.BootComponent) (*gin.Engine, func(), error) {
 	panic(wire.Build(service.ProviderService, server.ProviderServer, biz.ProviderBiz, data.ProviderData))
 }
