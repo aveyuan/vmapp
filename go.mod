@@ -6,6 +6,7 @@ require (
 	github.com/aveyuan/vbasedata v0.0.1
 	github.com/aveyuan/vjwt v0.0.0-20250827135114-c36b97f45d8a
 	github.com/aveyuan/vlogger v0.0.2
+	github.com/aveyuan/vrbac v0.0.0-20250311145654-7d3bc7ce5387
 	github.com/gin-gonic/gin v1.10.1
 	github.com/go-kratos/kratos/v2 v2.8.4
 	github.com/gogf/gf/v2 v2.9.1

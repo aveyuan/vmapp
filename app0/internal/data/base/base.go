@@ -5,10 +5,12 @@ package base
 // data层不应该由biz层直接传入，而且data层的操作也是一样，应该具体且明确的表示
 import (
 	"context"
-	"github.com/aveyuan/vbasedata"
 	"vmapp/app0/internal/biz/repo"
 	"vmapp/app0/internal/conf"
 	"vmapp/app0/internal/models"
+
+	"github.com/aveyuan/vbasedata"
+	"github.com/aveyuan/vrbac"
 
 	redis "github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
@@ -21,6 +23,7 @@ type (
 type Data struct {
 	Mysql   *gorm.DB
 	Redis   redis.UniversalClient
+	Rbac    *vrbac.VRbac
 	cleanup []func()
 }
 
@@ -36,7 +39,6 @@ func (d *Data) Tx(ctx context.Context) (*gorm.DB, context.Context) {
 	ctx = context.WithValue(ctx, contextTxKey{}, tx)
 	return tx, ctx
 }
-
 
 func (d *Data) DB(ctx context.Context) *gorm.DB {
 	tx, ok := ctx.Value(contextTxKey{}).(*gorm.DB)
@@ -73,6 +75,20 @@ func NewData(c *conf.AppConf, bc *conf.BootComponent) (*Data, func(), error) {
 		data.cleanup = append(data.cleanup, f)
 		data.Mysql = g
 		g.AutoMigrate(new(models.User))
+
+		// 载入模型
+		bc.Logger.Info("初始化权限系统模型")
+		rbac := vrbac.NewVRbac(g)
+		if err := rbac.Init(); err != nil {
+			bc.Logger.Infof("初始化权限系统模型失败,%v", err)
+			panic(err)
+		}
+		bc.Logger.Info("载入权限系统模型")
+		if err := rbac.LoadPolicy(); err != nil {
+			bc.Logger.Infof("载入权限系统模型,%v", err)
+			panic(err)
+		}
+		data.Rbac = rbac
 	}
 
 	if c.Data.Redis != nil {

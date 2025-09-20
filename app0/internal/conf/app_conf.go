@@ -21,6 +21,7 @@ type Server struct {
 type Data struct {
 	Redis *vbasedata.RedisConfig `json:"redis"`
 	DB    *vbasedata.GormConfig  `json:"db"`
-	Pond  *vbasedata.PondConfig `json:"pond"`
-	Jwt   *vjwt.VjwtP           `json:"jwt"`
+	Pond  *vbasedata.PondConfig  `json:"pond"`
+	Jwt   *vjwt.VjwtP            `json:"jwt"`
+	Email *vbasedata.EmailConfig `json:"email"`
 }

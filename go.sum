@@ -28,6 +28,8 @@ github.com/aveyuan/vjwt v0.0.0-20250827135114-c36b97f45d8a h1:BX4rD3JjG6hJxXkuLo
 github.com/aveyuan/vjwt v0.0.0-20250827135114-c36b97f45d8a/go.mod h1:gkJTfeTFo6lCVDXlvlxtfGoGVILSnp71f4x2OTgvkTo=
 github.com/aveyuan/vlogger v0.0.2 h1:nJYiHzIX9Q24H8nT6JwEosRCzWJXavvaAPchOTgqqs0=
 github.com/aveyuan/vlogger v0.0.2/go.mod h1:8Mkkl77VE6io+b4jin92HJflRFUHMg/UZSu2swNKoWA=
+github.com/aveyuan/vrbac v0.0.0-20250311145654-7d3bc7ce5387 h1:L4cMLJByYcSXZHSr5dc25RSX2KYnRJWMkI+/LjYhohE=
+github.com/aveyuan/vrbac v0.0.0-20250311145654-7d3bc7ce5387/go.mod h1:quRyW70Q+XrJC9oLM/ACUCZiwSHwCC5X2EOZ6Jk9ECs=
 github.com/aymerick/douceur v0.2.0 h1:Mv+mAeH1Q+n9Fr+oyamOlAkUNPWPlA8PPGR0QAaYuPk=
 github.com/aymerick/douceur v0.2.0/go.mod h1:wlT5vV2O3h55X9m7iVYN0TBM0NH/MmbLnd30/FjWUq4=
 github.com/bsm/ginkgo/v2 v2.12.0 h1:Ny8MWAHyOepLGlLKYmXG4IEkioBysk6GpaRTLC8zwWs=

@@ -333,6 +333,12 @@ func (t *UserUseCase) LoginUser(ctx context.Context, req *dto.LoginReq) (*dto.Lo
 		token, exp, err := t.jwt.Token(&conf.VUser{
 			Uid:   one.Uid,
 			Uname: one.Username,
+			IsAdmin: func() bool {
+				return one.IsAdmin == 1
+			}(),
+			Role: func() []string {
+				return strings.Split(one.RoleCodes, ",")
+			}(),
 		})
 		if err != nil {
 			t.log.Errorf("token生成失败,%v", err)
@@ -361,9 +367,15 @@ func (t *UserUseCase) LogOutUser(ctx context.Context, token string) error {
 }
 
 func (t *UserUseCase) ReferTokenUser(ctx context.Context, token string) (*dto.LoginResp, error) {
-	token, exp, err := t.jwt.ReferToken(token, &conf.VUser{})
+	user, err := middleware.GetCtxUser(ctx)
 	if err != nil {
-		t.log.Errorf("token生成失败,%v", err)
+		t.log.WithContext(ctx).Errorf("获取用户信息失败,%v", err)
+		return nil, vhttp.NewError(http.StatusInternalServerError, "获取用户信息失败", vhttp.WithReason(err))
+	}
+
+	token, exp, err := t.jwt.ReferToken(token, user)
+	if err != nil {
+		t.log.WithContext(ctx).Errorf("token生成失败,%v", err)
 		return nil, vhttp.NewError(http.StatusInternalServerError, "token生成失败", vhttp.WithReason(err))
 	}
 

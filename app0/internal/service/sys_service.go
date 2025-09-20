@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 	"vmapp/app0/internal/dto"
+	"vmapp/app0/internal/vconst"
 	"vmapp/pkg/vhttp"
 
 	"vmapp/app0/internal/biz/usecase"
@@ -153,4 +154,31 @@ func (t *SysService) Restart(ctx *gin.Context) {
 	go func() {
 		t.bc.RestartChan <- 1
 	}()
+}
+
+// GetCode 获取验证码
+// 具体是邮件还是短信可以自定义实现
+func (t *SysService) GetCode(ctx *gin.Context) {
+	var req dto.GetCodeReq
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		vhttp.ErrorHandle(ctx, vhttp.NewError(http.StatusBadRequest, err.Error()))
+		return
+	}
+
+	// 销毁验证码
+	if b := t.bc.Captcha.Verify(ctx, req.Id, req.Captcha); !b {
+		vhttp.ErrorHandle(ctx, vhttp.NewError(http.StatusBadRequest, "验证码不正确"))
+		return
+	}
+
+	err := t.uc.SendCode(ctx, &usecase.SendCode{
+		Media:    vconst.EmailSendMedia,
+		To:       req.Email,
+		SendType: vconst.SendType(req.Type),
+	})
+	if err != nil {
+		vhttp.ErrorHandle(ctx, err)
+		return
+	}
+	vhttp.SuccessHandle(ctx, nil)
 }

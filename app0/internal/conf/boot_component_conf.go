@@ -27,6 +27,8 @@ type BootComponent struct {
 	LoginCount  *vbasedata.LruCache //登录计数
 	LoginLock   *vbasedata.LruCache //登录锁定
 	RestartChan chan int
+	Email       *vbasedata.Email
+
 }
 
 // NewBootComponent 初始化
@@ -50,6 +52,9 @@ func NewBootComponent(dc *AppConf, logger *log.Helper) *BootComponent {
 
 	if dc.Data.Jwt != nil {
 		bc.Jwt = vjwt.NewJwt[VUser](dc.Data.Jwt)
+	}
+	if dc.Data.Email != nil {
+		bc.Email = vbasedata.NewEmail(dc.Data.Email)
 	}
 
 	return bc

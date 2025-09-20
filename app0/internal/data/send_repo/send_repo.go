@@ -8,6 +8,7 @@ import (
 	"vmapp/app0/internal/data/base"
 	"vmapp/app0/internal/vconst"
 
+	"github.com/aveyuan/vbasedata"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -25,10 +26,20 @@ func NewSendRepo(data *base.Data, component *conf.BootComponent) repo.SendRepo {
 	}
 }
 
-// if c.Data.Email != nil {
-// 	data.Email = basedata.NewEmail(c.Data.Email)
-// }
-
 func (t *sendRepo) SendMsg(ctx context.Context, media vconst.SendMedia, sendType vconst.SendType, Template string, to string, title string, msg string) error {
-	return errors.New("not impl")
+
+	if t.bc.Email == nil {
+		return errors.New("当前邮箱未配置")
+	}
+
+	if err := t.bc.Email.SendMsg(&vbasedata.Msg{
+		Title:    title,
+		Body:     msg,
+		To:       to,
+		BodyType: vbasedata.TextBodyType,
+	}); err != nil {
+		return err
+	}
+
+	return nil
 }
