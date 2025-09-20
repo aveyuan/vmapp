@@ -9,9 +9,12 @@ import (
 
 const ErrCtx = "errCtx"
 
-func SuccessHandle(ctx *gin.Context, data interface{}) {
-	ctx.JSON(http.StatusOK, data)
-
+func SuccessHandle(ctx *gin.Context, data interface{}, opts ...DataOptions) {
+	d := &Data{Code: 200, Msg: "ok", Data: data}
+	for _, v := range opts {
+		v(d)
+	}
+	ctx.JSON(d.Code, d)
 }
 
 func ErrorHandle(ctx *gin.Context, err error) {
@@ -27,5 +30,4 @@ func ErrorHandle(ctx *gin.Context, err error) {
 		return
 	}
 	ctx.JSON(200, errData)
-
 }

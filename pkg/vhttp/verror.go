@@ -3,11 +3,11 @@ package vhttp
 type CustomErrorOptions func(*ErrData)
 
 type ErrData struct {
-	Code     int    `json:"code"`
-	Msg      string `json:"msg"`	
-	Reason   error  `json:"reason"`
-	StatusCode *int `json:"statusCode"`
-	Metadata interface{} `json:"metadata"`
+	Code       int         `json:"code"`
+	Msg        string      `json:"msg"`
+	Reason     error       `json:"reason"`
+	StatusCode *int        `json:"-"`
+	Metadata   interface{} `json:"metadata"`
 }
 
 func (t ErrData) Error() string {
@@ -41,8 +41,6 @@ func WithReason(reason error) CustomErrorOptions {
 		ErrData.Reason = reason
 	}
 }
-
-
 
 func WithStatusCode(statusCode int) CustomErrorOptions {
 	return func(ErrData *ErrData) {
