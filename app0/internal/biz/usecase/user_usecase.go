@@ -23,7 +23,6 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/uuid"
 	"github.com/jinzhu/copier"
-	"github.com/kataras/iris/v12"
 	"gorm.io/gorm"
 )
 
@@ -298,8 +297,8 @@ func (t *UserUseCase) ReSetToekn(ctx context.Context) error {
 }
 
 func (t *UserUseCase) LoginUser(ctx context.Context, req *dto.LoginReq) (*dto.LoginResp, error) {
-	c := ctx.(iris.Context)
-	ip := c.RemoteAddr()
+	c := ctx.(*gin.Context)
+	ip := c.RemoteIP()
 	if t.bc.LoginLock.Get(ip, false) != "" {
 		return nil, vhttp.NewError(http.StatusBadRequest, "账户已经锁定，请3分钟后再试")
 	}

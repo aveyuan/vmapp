@@ -13,3 +13,6 @@ server:
 data:
   db:
     type: sqlite
+  jwt:
+    key:      "123456"
+    alg:      "hs256"
