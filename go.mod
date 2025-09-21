@@ -15,6 +15,7 @@ require (
 	github.com/jinzhu/copier v0.4.0
 	github.com/kataras/iris/v12 v12.2.11
 	github.com/redis/go-redis/v9 v9.12.1
+	github.com/spf13/cast v1.10.0
 	github.com/tjfoc/gmsm v1.4.1
 	go.uber.org/automaxprocs v1.6.0
 	gorm.io/gorm v1.30.1

@@ -65,13 +65,13 @@ type VerifyCode struct {
 
 type UserUseCase struct {
 	c   *conf.Data
+	bc  *conf.BootComponent
 	up  repo.UserRepo
 	rp  repo.RoleRepo
 	sp  repo.SendRepo
 	tx  repo.Transaction
 	log *log.Helper
 	jwt *vjwt.Vjwt[conf.VUser]
-	bc  *conf.BootComponent
 }
 
 func NewUserUseCase(c *conf.Data, up repo.UserRepo, tx repo.Transaction, bc *conf.BootComponent, rp repo.RoleRepo, sp repo.SendRepo) *UserUseCase {
