@@ -18,8 +18,8 @@ import (
 	"vmapp/app0/internal/models"
 	"vmapp/pkg/encrypt/sha"
 
+	"github.com/gin-gonic/gin"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/kataras/iris/v12"
 	"gorm.io/gorm"
 )
 
@@ -53,13 +53,18 @@ func (t *FileUseCase) UploadFile(ctx context.Context, Exts []string) (*FileRes, 
 		return fileRes, vhttp.NewError(http.StatusInternalServerError, "获取用户信息失败", vhttp.WithReason(err))
 	}
 
-	f, file, err := ctx.(iris.Context).FormFile("file")
+	f, err := ctx.(*gin.Context).FormFile("file")
 	if err != nil {
 		return fileRes, vhttp.NewError(http.StatusBadRequest, "文件解析失败", vhttp.WithReason(err))
 	}
-	defer f.Close()
+	file, err := f.Open()
+	if err != nil {
+		t.log.WithContext(ctx).Errorf("文件打开失败,%v", err)
+		return fileRes, vhttp.NewError(http.StatusBadRequest, "文件打开失败", vhttp.WithReason(err))
+	}
+	defer file.Close()
 
-	ext := strings.ToLower(filepath.Ext(file.Filename))
+	ext := strings.ToLower(filepath.Ext(f.Filename))
 
 	if len(Exts) > 0 {
 		var match bool = false
@@ -89,7 +94,7 @@ func (t *FileUseCase) UploadFile(ctx context.Context, Exts []string) (*FileRes, 
 	// }
 
 	// defer shaOpen.Close()
-	shaByte, err := io.ReadAll(f)
+	shaByte, err := io.ReadAll(file)
 	if err != nil {
 		t.log.WithContext(ctx).Errorf("文件读取失败,%v", err)
 		return fileRes, vhttp.NewError(http.StatusBadRequest, "文件读取失败", vhttp.WithReason(err))
@@ -115,11 +120,11 @@ func (t *FileUseCase) UploadFile(ctx context.Context, Exts []string) (*FileRes, 
 
 	fileModel := &models.File{
 		Id:        id,
-		Size:      file.Size,
-		Name:      file.Filename,
+		Size:      f.Size,
+		Name:      f.Filename,
 		Sha256:    sha256,
 		Suffix:    ext,
-		Mime:      file.Header.Get("Content-Type"),
+		Mime:      f.Header.Get("Content-Type"),
 		Uid:       user.Uid,
 		CreatedAt: time.Now(),
 		Private:   0,
@@ -139,18 +144,13 @@ func (t *FileUseCase) UploadFile(ctx context.Context, Exts []string) (*FileRes, 
 		return 1
 	}()
 
-	fo, err := file.Open()
-	if err != nil {
-		t.log.WithContext(ctx).Errorf("文件打开失败,%v", err)
-		return fileRes, vhttp.NewError(http.StatusInternalServerError, "文件打开失败", vhttp.WithReason(err))
-	}
-	defer fo.Close()
+
 
 	vkey, err := t.fp.UploadFile(ctx, repo.Vkey{
 		Dir:      dir,
 		FileName: filename,
 		LocalDir: localDir,
-	}, fo)
+	}, file)
 	if err != nil {
 		t.log.WithContext(ctx).Errorf("文件存储失败,%v", err)
 		return fileRes, vhttp.NewError(http.StatusInternalServerError, "文件存储失败", vhttp.WithReason(err))

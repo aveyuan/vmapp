@@ -12,7 +12,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/kataras/iris/v12"
 )
 
 type SysService struct {
@@ -141,7 +140,7 @@ func (t *SysService) Captcha(ctx *gin.Context) {
 		vhttp.ErrorHandle(ctx, vhttp.NewError(http.StatusBadRequest, "验证码生成失败", vhttp.WithReason(err)))
 		return
 	}
-	vhttp.SuccessHandle(ctx, iris.Map{
+	vhttp.SuccessHandle(ctx, gin.H{
 		"id":        id,
 		"imgbase64": imgbase64,
 	})
