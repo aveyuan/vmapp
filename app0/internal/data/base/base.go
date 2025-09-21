@@ -74,7 +74,15 @@ func NewData(c *conf.AppConf, bc *conf.BootComponent) (*Data, func(), error) {
 		}
 		data.cleanup = append(data.cleanup, f)
 		data.Mysql = g
-		g.AutoMigrate(new(models.User))
+		g.AutoMigrate(
+			new(models.User),
+			new(models.Role),
+			new(models.Menu),
+			new(models.Send),
+			new(models.File),
+			new(models.EventLog),
+			new(models.Option),
+		)
 
 		// 载入模型
 		bc.Logger.Info("初始化权限系统模型")

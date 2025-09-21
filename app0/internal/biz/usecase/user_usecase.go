@@ -9,6 +9,7 @@ import (
 	"time"
 	"vmapp/app0/internal/biz/repo"
 	"vmapp/app0/internal/conf"
+	"vmapp/app0/internal/constant"
 	"vmapp/app0/internal/dto"
 	"vmapp/app0/internal/middleware"
 	"vmapp/app0/internal/models"
@@ -18,6 +19,7 @@ import (
 	"vmapp/pkg/vhttp"
 
 	"github.com/aveyuan/vjwt"
+	"github.com/gin-gonic/gin"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/uuid"
 	"github.com/jinzhu/copier"
@@ -344,6 +346,14 @@ func (t *UserUseCase) LoginUser(ctx context.Context, req *dto.LoginReq) (*dto.Lo
 			t.log.Errorf("token生成失败,%v", err)
 			return nil, vhttp.NewError(http.StatusInternalServerError, "token生成失败", vhttp.WithReason(err))
 		}
+		ctx.(*gin.Context).Set(constant.EventLogCtx, &repo.EventLog{
+			Type:    repo.EventLogTypeOp,
+			Model:   repo.EventLogAdminSystem,
+			ObjId:   one.Uid,
+			ObjName: one.Nickname,
+			Op:      "登录",
+		})
+		t.bc.LoginCount.Get(ip, true)
 
 		return &dto.LoginResp{Token: token, Exp: int(exp)}, nil
 	}

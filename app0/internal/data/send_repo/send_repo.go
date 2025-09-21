@@ -32,13 +32,28 @@ func (t *sendRepo) SendMsg(ctx context.Context, media vconst.SendMedia, sendType
 		return errors.New("当前邮箱未配置")
 	}
 
-	if err := t.bc.Email.SendMsg(&vbasedata.Msg{
-		Title:    title,
-		Body:     msg,
-		To:       to,
-		BodyType: vbasedata.TextBodyType,
-	}); err != nil {
-		return err
+	f := func() error {
+		if err := t.bc.Email.SendMsg(&vbasedata.Msg{
+			Title:    title,
+			Body:     msg,
+			To:       to,
+			BodyType: vbasedata.TextBodyType,
+		}); err != nil {
+			return err
+		}
+		return nil
+	}
+
+	if t.bc.Pond != nil {
+		t.bc.Pond.Submit(func() {
+			if err := f(); err != nil {
+				t.log.Errorf("邮件发送失败,%v", err)
+			}
+		})
+	} else {
+		if err := f(); err != nil {
+			return err
+		}
 	}
 
 	return nil
